@@ -1,0 +1,16 @@
+.DS_Store
+.env
+.env.*
+*.log
+.build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+test_output/
+**/temp/
+**/exports/*.mp4
+**/exports/*.mov
+**/logs/*.log
+**/*.animdex/assets/originals/
+**/*.animdex/assets/working/
