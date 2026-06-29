@@ -2,6 +2,7 @@
 
 Planned follow-ups:
 
+- macOS UI/UX polish follow-ups based on real user feedback
 - Crossfades between scenes
 - Audio track support
 - Captions and overlays

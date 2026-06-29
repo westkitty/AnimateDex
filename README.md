@@ -38,6 +38,13 @@ swift test
 swift run
 ```
 
+## macOS UI/UX Pass
+
+- Resize the window normally; the layout uses a resizable split view.
+- Use the sidebar to import, open, and switch workflow sections.
+- Copy status, diagnostics, and render output paths from the visible panels.
+- Motion Recipe lives in its own section and expects externally generated JSON.
+
 ## Import
 
 1. Create or open a workspace.

@@ -10,6 +10,7 @@
 6. Confirm the sequence browser shows `image1.png`, `image2.png`, `image10.png`.
 7. Paste a bundled Motion Recipe example and confirm validation plus preview.
 8. Render a proof MP4.
+9. Copy diagnostics from the sidebar and confirm the text includes workspace, source, scene count, and paths.
 
 ## Sample Project
 
@@ -31,6 +32,13 @@ Generate the sample images with:
 - Confirm validation rejects malformed JSON and unsupported schema versions.
 - Confirm preview reports the affected scenes before apply.
 - Confirm apply writes `motion_recipe_applied.json`, `motion_recipe_report.txt`, and `scene_plan.before_motion_recipe.json`.
+
+## UI/UX Validation
+
+- Confirm the window resizes larger and smaller without clipping the main content.
+- Confirm the empty state offers enabled import and open actions.
+- Confirm long status and diagnostics text can be copied from the GUI.
+- Confirm cancelled pickers return to a calm ready state instead of a scary error.
 
 ## Known Failure Cases
 

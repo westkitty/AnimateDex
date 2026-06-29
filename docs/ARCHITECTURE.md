@@ -10,6 +10,14 @@ AnimateDex is a native macOS SwiftUI application built as a Swift Package.
 - `Views`: dashboard, sequence browser, inspector, validation, Motion Recipe, and render panels
 - `Utilities`: JSON, process execution, and sort helpers
 
+## macOS UI/UX Pass
+
+- `NavigationSplitView` provides the sidebar and workflow detail layout.
+- `AppNotice` carries copyable user-facing summaries, paths, and suggestions.
+- `AppWorkflowSection` keeps the main workflow sections discoverable from the sidebar.
+- Long logs and diagnostics are rendered inside scroll views instead of fixed-height clipped boxes.
+- The empty state does not force a project creation step before import.
+
 ## Data Flow
 
 1. User creates or opens a workspace.

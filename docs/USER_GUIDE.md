@@ -6,12 +6,20 @@
 2. Click `New Project` or `Open Existing Project`.
 3. Pick a workspace folder ending in `.animdex`.
 
+## macOS UI/UX Pass
+
+- The window is resizable and the content scrolls when it gets short.
+- The left sidebar holds project actions, summary, and workflow navigation.
+- Copy buttons are available for status, diagnostics, workspace paths, and logs.
+- The empty state lets you import immediately instead of forcing an empty project first.
+
 ## Import Images
 
 1. Open a workspace.
 2. Click `Import Folder or ZIP`.
 3. Select a folder of images or a ZIP archive.
 4. Review the import status and validation panel.
+5. If you cancel a chooser, the app returns to a calm ready state.
 
 ## Review the Sequence
 

@@ -63,6 +63,30 @@ struct WorkspaceService {
         return url
     }
 
+    @MainActor
+    func chooseWorkspaceForImport(suggestedName: String) throws -> URL? {
+        let panel = NSOpenPanel()
+        panel.title = "Choose where to create the AnimateDex workspace"
+        panel.prompt = "Choose"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        panel.canCreateDirectories = true
+
+        guard panel.runModal() == .OK, let url = panel.url else {
+            return nil
+        }
+
+        if url.pathExtension == "animdex" {
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+            return url
+        }
+
+        let workspaceURL = url.appendingPathComponent("\(suggestedName).animdex")
+        try FileManager.default.createDirectory(at: workspaceURL, withIntermediateDirectories: true)
+        return workspaceURL
+    }
+
     func loadOrCreateProject(at workspaceURL: URL) throws -> WorkspaceLoadResult {
         try ensureWorkspaceLayout(at: workspaceURL)
 
