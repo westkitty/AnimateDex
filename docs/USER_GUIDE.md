@@ -37,3 +37,13 @@
 - macOS junk files are ignored.
 - Unsupported files are listed in the import report.
 - The source archive is not modified.
+
+## First Real ZIP Verification Status
+
+- Date: 2026-06-28
+- Sample folder test: passed
+- Real ZIP import: passed
+- Real ZIP render: passed
+- Real ZIP outputs: workspace `exports/proof_render.mp4`, `exports/render_manifest.json`, `logs/render_log.txt`
+- Irregular image behavior: one portrait frame in the real ZIP was flagged and treated with a safe preset instead of being stretched
+- Git hygiene: extracted media and generated MP4s stay out of version control

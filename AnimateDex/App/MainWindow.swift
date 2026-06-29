@@ -18,6 +18,9 @@ struct MainWindow: View {
             }
         }
         .frame(minWidth: 1200, minHeight: 780)
+        .task {
+            await appModel.runAutomationIfConfigured()
+        }
     }
 }
 
@@ -37,7 +40,7 @@ struct DashboardView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(spacing: 14) {
-                    SceneInspectorView(scene: appModel.selectedScene)
+                    SceneInspectorView(appModel: appModel)
                     RenderSettingsView(renderSettings: $appModel.renderSettings)
                     RenderProgressView(
                         statusMessage: appModel.statusMessage,

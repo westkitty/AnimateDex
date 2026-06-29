@@ -31,3 +31,16 @@ Generate the sample images with:
 - unsupported archive contents
 - empty import
 - permission denied writing to the workspace
+
+## First Real ZIP Verification Status
+
+- Date: 2026-06-28
+- Sample folder test: passed
+- Real ZIP path tested: `/Users/andrew/Library/CloudStorage/GoogleDrive-digitalghosts269@gmail.com/My Drive/macbook/Starsilk_PlanetaryTemplates/codec_storyboard_s001_s100_outpainted_collection.zip`
+- Real ZIP import: passed
+- Real ZIP render: passed
+- Real ZIP scene count: 100
+- Irregular image handling: passed; one portrait source frame was flagged and assigned `problem_insert`
+- Known launch quirk: accessibility automation was required in this environment to exercise the file-picker flow reliably
+- Output locations: workspace `exports/`, `logs/`, and `temp/`
+- Git hygiene: generated media and imported assets remained ignored and were not committed

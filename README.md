@@ -66,3 +66,14 @@ brew install ffmpeg
 ```
 
 - If the build fails, run `./scripts/doctor.sh` and inspect the reported missing tools.
+
+## First Real ZIP Verification Status
+
+- Date: 2026-06-28
+- Sample folder test: passed
+- Real ZIP tested: `/Users/andrew/Library/CloudStorage/GoogleDrive-digitalghosts269@gmail.com/My Drive/macbook/Starsilk_PlanetaryTemplates/codec_storyboard_s001_s100_outpainted_collection.zip`
+- Real ZIP import: passed
+- Real ZIP render: passed
+- Remaining unverified: fully manual file-picker navigation in this desktop environment
+- Output locations: workspace `exports/`, `logs/`, and `temp/`
+- Git hygiene: generated media, render outputs, and extracted assets stay ignored and were not committed

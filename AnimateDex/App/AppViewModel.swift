@@ -21,6 +21,7 @@ final class AppViewModel {
     var renderLog: String = ""
     var renderProgress: Double = 0
     var isBusy: Bool = false
+    var automationDidRun = false
 
     var hasActiveProject: Bool {
         activeProject != nil
@@ -90,6 +91,77 @@ final class AppViewModel {
         guard let activeProject else { return }
         let exportsURL = URL(fileURLWithPath: activeProject.workspacePath).appendingPathComponent("exports")
         NSWorkspace.shared.open(exportsURL)
+    }
+
+    func updateScenePreset(sceneID: String, preset: MotionPreset) {
+        guard let index = scenes.firstIndex(where: { $0.id == sceneID }) else { return }
+        scenes[index].motionPreset = preset
+        selectedSceneID = sceneID
+
+        guard var project = activeProject else { return }
+        project.updatedAt = .now
+        project.renderSettings = renderSettings
+        activeProject = project
+
+        do {
+            try workspaceService.save(
+                project: project,
+                scenes: scenes,
+                importReport: importReport,
+                to: URL(fileURLWithPath: project.workspacePath)
+            )
+        } catch {
+            statusMessage = "Failed to save preset change: \(error.localizedDescription)"
+        }
+    }
+
+    func runAutomationIfConfigured() async {
+        guard !automationDidRun else { return }
+        let environment = ProcessInfo.processInfo.environment
+        guard let workspacePath = environment["ANIMATEDEX_AUTOMATION_WORKSPACE"],
+              let sourcePath = environment["ANIMATEDEX_AUTOMATION_SOURCE"] else {
+            return
+        }
+
+        automationDidRun = true
+        let workspaceURL = URL(fileURLWithPath: workspacePath)
+        let sourceURL = URL(fileURLWithPath: sourcePath)
+
+        do {
+            statusMessage = "Automation: opening workspace"
+            let loaded = try workspaceService.loadOrCreateProject(at: workspaceURL)
+            activeProject = loaded.project
+
+            statusMessage = "Automation: importing source"
+            let importResult = try await importService.importSource(
+                sourceURL: sourceURL,
+                into: loaded.project,
+                renderSettings: renderSettings
+            )
+
+            activeProject = importResult.project
+            scenes = importResult.scenes
+            importReport = importResult.importReport
+            validationIssues = importResult.validationIssues
+            selectedSceneID = scenes.first?.id
+            statusMessage = "Automation: import complete"
+
+            if environment["ANIMATEDEX_AUTOMATION_RENDER"] == "1" {
+                statusMessage = "Automation: rendering"
+                let renderResult = try await renderService.render(project: importResult.project, scenes: importResult.scenes, renderSettings: renderSettings) { progress, message in
+                    Task { @MainActor in
+                        self.renderProgress = progress
+                        self.statusMessage = message
+                    }
+                }
+                renderLog = renderResult.renderLog
+                renderProgress = 1
+                statusMessage = "Automation: render complete"
+            }
+        } catch {
+            statusMessage = "Automation failed: \(error.localizedDescription)"
+            renderLog = error.localizedDescription
+        }
     }
 
     private func openWorkspace(at workspaceURL: URL) async throws {
