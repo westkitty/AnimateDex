@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "recipeName": "Vertical Social Cut",
+  "description": "Portrait-friendly framing with compact timing.",
+  "target": {
+    "matchMode": "sequenceIndex",
+    "sceneRange": {
+      "start": 1,
+      "end": 10
+    }
+  },
+  "globalRenderSettings": {
+    "outputWidth": 1080,
+    "outputHeight": 1920,
+    "fps": 30,
+    "defaultSceneDuration": 2.75
+  },
+  "globalDefaults": {
+    "durationSeconds": 2.75,
+    "motionPreset": "gentle_drift",
+    "transitionIn": "cut",
+    "transitionOut": "cut"
+  },
+  "sections": [
+    {
+      "name": "Hook",
+      "sceneRange": {
+        "start": 1,
+        "end": 3
+      },
+      "durationSeconds": 2,
+      "motionPreset": "slow_push_in",
+      "transitionIn": "cut",
+      "transitionOut": "cut",
+      "notes": "Front-load the strongest scenes."
+    },
+    {
+      "name": "Middle",
+      "sceneRange": {
+        "start": 4,
+        "end": 8
+      },
+      "durationSeconds": 2.75,
+      "motionPreset": "pan_up",
+      "transitionIn": "cut",
+      "transitionOut": "cut",
+      "notes": "Keep the motion vertical."
+    },
+    {
+      "name": "Closer",
+      "sceneRange": {
+        "start": 9,
+        "end": 10
+      },
+      "durationSeconds": 3,
+      "motionPreset": "slow_pull_out",
+      "transitionIn": "cut",
+      "transitionOut": "fade",
+      "notes": "Finish cleanly."
+    }
+  ],
+  "sceneOverrides": [
+    {
+      "sequenceIndex": 1,
+      "durationSeconds": 3,
+      "motionPreset": "locked_off",
+      "transitionIn": "fade",
+      "transitionOut": "cut",
+      "notes": "Intro card."
+    }
+  ]
+}

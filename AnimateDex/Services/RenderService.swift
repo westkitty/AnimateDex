@@ -11,6 +11,7 @@ struct RenderResult: Sendable {
 struct RenderManifest: Codable, Sendable {
     var schemaVersion: Int = 1
     var projectName: String
+    var motionRecipeName: String?
     var createdAt: Date
     var outputPath: String
     var sceneCount: Int
@@ -35,6 +36,7 @@ struct RenderService {
         project: AnimateProject,
         scenes: [SceneItem],
         renderSettings: RenderSettings,
+        motionRecipeName: String? = nil,
         progress: @escaping @Sendable (Double, String) -> Void
     ) async throws -> RenderResult {
         let workspaceURL = URL(fileURLWithPath: project.workspacePath)
@@ -98,6 +100,7 @@ struct RenderService {
         let renderLogURL = logsURL.appendingPathComponent("render_log.txt")
         let manifest = RenderManifest(
             projectName: project.projectName,
+            motionRecipeName: motionRecipeName ?? project.lastMotionRecipeName,
             createdAt: .now,
             outputPath: outputURL.path,
             sceneCount: scenes.count,

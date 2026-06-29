@@ -8,7 +8,8 @@
 4. Launch the app with `swift run`.
 5. Create a workspace and import `examples/sample_project/images`.
 6. Confirm the sequence browser shows `image1.png`, `image2.png`, `image10.png`.
-7. Render a proof MP4.
+7. Paste a bundled Motion Recipe example and confirm validation plus preview.
+8. Render a proof MP4.
 
 ## Sample Project
 
@@ -24,6 +25,13 @@ Generate the sample images with:
 - Confirm `render_manifest.json` exists.
 - Confirm `render_log.txt` contains the ffmpeg command output.
 
+## Motion Recipe Validation
+
+- Confirm the Motion Recipe panel loads the bundled examples from `examples/recipes/`.
+- Confirm validation rejects malformed JSON and unsupported schema versions.
+- Confirm preview reports the affected scenes before apply.
+- Confirm apply writes `motion_recipe_applied.json`, `motion_recipe_report.txt`, and `scene_plan.before_motion_recipe.json`.
+
 ## Known Failure Cases
 
 - `ffmpeg` missing
@@ -31,6 +39,7 @@ Generate the sample images with:
 - unsupported archive contents
 - empty import
 - permission denied writing to the workspace
+- unsupported Motion Recipe schema versions
 
 ## First Real ZIP Verification Status
 

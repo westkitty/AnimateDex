@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "recipeName": "Problem Image Safe Insert",
+  "description": "A conservative pass for mixed or problematic assets.",
+  "target": {
+    "matchMode": "sequenceIndex",
+    "sceneRange": {
+      "start": 1,
+      "end": 8
+    }
+  },
+  "globalRenderSettings": {
+    "outputWidth": 1920,
+    "outputHeight": 1080,
+    "fps": 30,
+    "defaultSceneDuration": 3
+  },
+  "globalDefaults": {
+    "durationSeconds": 3,
+    "motionPreset": "problem_insert",
+    "transitionIn": "cut",
+    "transitionOut": "cut"
+  },
+  "sections": [
+    {
+      "name": "Safe pass",
+      "sceneRange": {
+        "start": 1,
+        "end": 8
+      },
+      "durationSeconds": 3,
+      "motionPreset": "problem_insert",
+      "transitionIn": "cut",
+      "transitionOut": "cut",
+      "notes": "Prefer stable framing for any odd source frames."
+    }
+  ],
+  "sceneOverrides": [
+    {
+      "sequenceIndex": 3,
+      "durationSeconds": 4,
+      "motionPreset": "locked_off",
+      "transitionIn": "fade",
+      "transitionOut": "cut",
+      "notes": "Freeze the most sensitive asset."
+    }
+  ]
+}

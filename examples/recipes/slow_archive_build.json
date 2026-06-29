@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "recipeName": "Slow Archive Build",
+  "description": "A calm archival pass with longer holds and subtle motion.",
+  "target": {
+    "matchMode": "sequenceIndex",
+    "sceneRange": {
+      "start": 1,
+      "end": 12
+    }
+  },
+  "globalRenderSettings": {
+    "outputWidth": 1920,
+    "outputHeight": 1080,
+    "fps": 24,
+    "defaultSceneDuration": 4
+  },
+  "globalDefaults": {
+    "durationSeconds": 4,
+    "motionPreset": "gentle_drift",
+    "transitionIn": "cut",
+    "transitionOut": "cut"
+  },
+  "sections": [
+    {
+      "name": "Opening card",
+      "sceneRange": {
+        "start": 1,
+        "end": 2
+      },
+      "durationSeconds": 5,
+      "motionPreset": "locked_off",
+      "transitionIn": "fade",
+      "transitionOut": "cut",
+      "notes": "Hold the title frames longer."
+    },
+    {
+      "name": "Core sequence",
+      "sceneRange": {
+        "start": 3,
+        "end": 10
+      },
+      "durationSeconds": 4,
+      "motionPreset": "slow_push_in",
+      "transitionIn": "cut",
+      "transitionOut": "cut",
+      "notes": "Keep motion restrained."
+    },
+    {
+      "name": "Closer",
+      "sceneRange": {
+        "start": 11,
+        "end": 12
+      },
+      "durationSeconds": 5,
+      "motionPreset": "slow_pull_out",
+      "transitionIn": "cut",
+      "transitionOut": "fade",
+      "notes": "Ease out slowly."
+    }
+  ],
+  "sceneOverrides": [
+    {
+      "sequenceIndex": 2,
+      "durationSeconds": 6,
+      "motionPreset": "locked_off",
+      "transitionIn": "fade",
+      "transitionOut": "cut",
+      "notes": "Archive note insert.",
+      "sceneId": "scene-2",
+      "filenameContains": "cover"
+    },
+    {
+      "sequenceIndex": 12,
+      "durationSeconds": 6,
+      "motionPreset": "slow_pull_out",
+      "transitionIn": "cut",
+      "transitionOut": "fade",
+      "notes": "Final frame accent.",
+      "sceneId": "scene-12",
+      "filenameContains": "outro"
+    }
+  ]
+}

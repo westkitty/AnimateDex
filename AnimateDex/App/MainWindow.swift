@@ -42,6 +42,7 @@ struct DashboardView: View {
                 VStack(spacing: 14) {
                     SceneInspectorView(appModel: appModel)
                     RenderSettingsView(renderSettings: $appModel.renderSettings)
+                    MotionRecipeView(appModel: appModel)
                     RenderProgressView(
                         statusMessage: appModel.statusMessage,
                         progressValue: appModel.renderProgress,

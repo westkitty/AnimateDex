@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "recipeName": "High Energy Trailer",
+  "description": "Fast cuts with aggressive motion and punchier timing.",
+  "target": {
+    "matchMode": "sequenceIndex",
+    "sceneRange": {
+      "start": 1,
+      "end": 16
+    }
+  },
+  "globalRenderSettings": {
+    "outputWidth": 1920,
+    "outputHeight": 1080,
+    "fps": 30,
+    "defaultSceneDuration": 2.5
+  },
+  "globalDefaults": {
+    "durationSeconds": 2.5,
+    "motionPreset": "pan_right",
+    "transitionIn": "cut",
+    "transitionOut": "cut"
+  },
+  "sections": [
+    {
+      "name": "Cold open",
+      "sceneRange": {
+        "start": 1,
+        "end": 4
+      },
+      "durationSeconds": 2,
+      "motionPreset": "slow_push_in",
+      "transitionIn": "cut",
+      "transitionOut": "cut",
+      "notes": "Stay controlled before the lift."
+    },
+    {
+      "name": "Main run",
+      "sceneRange": {
+        "start": 5,
+        "end": 12
+      },
+      "durationSeconds": 2.5,
+      "motionPreset": "pan_left",
+      "transitionIn": "cut",
+      "transitionOut": "cut",
+      "notes": "Keep the frame moving."
+    },
+    {
+      "name": "Finish",
+      "sceneRange": {
+        "start": 13,
+        "end": 16
+      },
+      "durationSeconds": 3,
+      "motionPreset": "pulse_glow",
+      "transitionIn": "cut",
+      "transitionOut": "fade",
+      "notes": "Land the ending with a softer feel."
+    }
+  ],
+  "sceneOverrides": [
+    {
+      "sequenceIndex": 4,
+      "durationSeconds": 3,
+      "motionPreset": "pulse_glow",
+      "transitionIn": "cut",
+      "transitionOut": "cut",
+      "notes": "Accent frame.",
+      "sceneId": "scene-4"
+    }
+  ]
+}

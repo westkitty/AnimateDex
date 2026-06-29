@@ -9,6 +9,8 @@ final class AppViewModel {
     private let workspaceService = WorkspaceService()
     private let importService = ImportService()
     private let renderService = RenderService()
+    private let motionRecipeService = MotionRecipeService()
+    private let promptBriefService = AIPromptBriefService()
     private let jsonStore = JSONFileStore()
 
     var activeProject: AnimateProject?
@@ -22,6 +24,11 @@ final class AppViewModel {
     var renderProgress: Double = 0
     var isBusy: Bool = false
     var automationDidRun = false
+    var motionRecipeText: String = ""
+    var motionRecipeValidationResult: MotionRecipeValidationResult?
+    var motionRecipePreview: MotionRecipePreview?
+    var motionRecipeApplicationResult: MotionRecipeApplicationResult?
+    var motionRecipeStatusMessage: String = "Paste a Motion Recipe JSON object."
 
     var hasActiveProject: Bool {
         activeProject != nil
@@ -93,6 +100,127 @@ final class AppViewModel {
         NSWorkspace.shared.open(exportsURL)
     }
 
+    func loadMotionRecipeExample(_ example: MotionRecipeExample) {
+        motionRecipeText = example.json
+        motionRecipeApplicationResult = nil
+        validateMotionRecipe()
+        motionRecipeStatusMessage = "Loaded example: \(example.title)"
+    }
+
+    func copyAIPromptBrief() {
+        guard let activeProject else {
+            motionRecipeStatusMessage = "Open a project before copying a prompt brief."
+            return
+        }
+
+        let brief = promptBriefService.makePromptBrief(
+            project: activeProject,
+            scenes: scenes,
+            renderSettings: renderSettings
+        )
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(brief, forType: .string)
+        motionRecipeStatusMessage = "Copied AI prompt brief to the clipboard."
+    }
+
+    func clearMotionRecipe() {
+        motionRecipeText = ""
+        motionRecipeValidationResult = nil
+        motionRecipePreview = nil
+        motionRecipeApplicationResult = nil
+        motionRecipeStatusMessage = "Motion Recipe cleared."
+    }
+
+    func validateMotionRecipe() {
+        let result = motionRecipeService.validate(
+            recipeText: motionRecipeText,
+            currentScenes: scenes,
+            project: activeProject
+        )
+        motionRecipeValidationResult = result
+        motionRecipeApplicationResult = nil
+        motionRecipePreview = nil
+
+        if result.issues.isEmpty {
+            motionRecipeStatusMessage = "Motion Recipe is valid."
+        } else {
+            let errorCount = result.issues.filter { $0.severity == .error }.count
+            let warningCount = result.issues.filter { $0.severity == .warning }.count
+            motionRecipeStatusMessage = "Validation finished: \(errorCount) error(s), \(warningCount) warning(s)."
+        }
+    }
+
+    func previewMotionRecipe() {
+        let result = motionRecipeService.validate(
+            recipeText: motionRecipeText,
+            currentScenes: scenes,
+            project: activeProject
+        )
+        motionRecipeValidationResult = result
+        motionRecipeApplicationResult = nil
+
+        guard let recipe = result.recipe, !result.hasErrors else {
+            motionRecipePreview = nil
+            motionRecipeStatusMessage = "Preview unavailable until the recipe validates."
+            return
+        }
+
+        motionRecipePreview = motionRecipeService.preview(
+            recipe: recipe,
+            currentScenes: scenes,
+            project: activeProject
+        )
+        motionRecipeStatusMessage = "Preview updated for \(recipe.recipeName)."
+    }
+
+    func applyMotionRecipe() {
+        guard let currentProject = activeProject else {
+            motionRecipeStatusMessage = "Open a project before applying a Motion Recipe."
+            return
+        }
+
+        let result = motionRecipeService.validate(
+            recipeText: motionRecipeText,
+            currentScenes: scenes,
+            project: currentProject
+        )
+        motionRecipeValidationResult = result
+        guard let recipe = result.recipe, !result.hasErrors else {
+            motionRecipePreview = nil
+            motionRecipeStatusMessage = result.hasErrors ? "Motion Recipe has blocking validation errors." : "Motion Recipe is not ready."
+            return
+        }
+
+        do {
+            guard let workspaceURL = resultWorkspaceURL else {
+                motionRecipeStatusMessage = "Open a workspace before applying a Motion Recipe."
+                return
+            }
+
+            let applicationResult = try motionRecipeService.apply(
+                recipe: recipe,
+                project: currentProject,
+                currentScenes: scenes,
+                importReport: importReport,
+                workspaceURL: workspaceURL
+            )
+            motionRecipeApplicationResult = applicationResult
+            motionRecipeStatusMessage = "Applied \(applicationResult.recipeName) to \(applicationResult.changedSceneCount) scene(s)."
+
+            let reloaded = try workspaceService.loadOrCreateProject(at: workspaceURL)
+            activeProject = reloaded.project
+            scenes = reloaded.scenes
+            importReport = reloaded.importReport
+            validationIssues = reloaded.validationIssues
+            renderSettings = reloaded.project.renderSettings
+            selectedSceneID = scenes.first?.id
+            refreshMotionRecipeState()
+        } catch {
+            motionRecipeStatusMessage = "Failed to apply Motion Recipe: \(error.localizedDescription)"
+        }
+    }
+
     func updateScenePreset(sceneID: String, preset: MotionPreset) {
         guard let index = scenes.firstIndex(where: { $0.id == sceneID }) else { return }
         scenes[index].motionPreset = preset
@@ -113,6 +241,8 @@ final class AppViewModel {
         } catch {
             statusMessage = "Failed to save preset change: \(error.localizedDescription)"
         }
+
+        refreshMotionRecipeState()
     }
 
     func runAutomationIfConfigured() async {
@@ -131,6 +261,7 @@ final class AppViewModel {
             statusMessage = "Automation: opening workspace"
             let loaded = try workspaceService.loadOrCreateProject(at: workspaceURL)
             activeProject = loaded.project
+            renderSettings = loaded.project.renderSettings
 
             statusMessage = "Automation: importing source"
             let importResult = try await importService.importSource(
@@ -145,6 +276,7 @@ final class AppViewModel {
             validationIssues = importResult.validationIssues
             selectedSceneID = scenes.first?.id
             statusMessage = "Automation: import complete"
+            refreshMotionRecipeState()
 
             if environment["ANIMATEDEX_AUTOMATION_RENDER"] == "1" {
                 statusMessage = "Automation: rendering"
@@ -173,6 +305,7 @@ final class AppViewModel {
         validationIssues = project.validationIssues
         selectedSceneID = scenes.first?.id
         statusMessage = "Workspace open: \(workspaceURL.lastPathComponent)"
+        refreshMotionRecipeState()
     }
 
     private func performImport(into project: AnimateProject) async {
@@ -198,6 +331,7 @@ final class AppViewModel {
             validationIssues = result.validationIssues
             selectedSceneID = scenes.first?.id
             statusMessage = "Imported \(scenes.count) scenes"
+            refreshMotionRecipeState()
         } catch {
             statusMessage = "Import failed: \(error.localizedDescription)"
         }
@@ -210,7 +344,11 @@ final class AppViewModel {
             statusMessage = "Rendering..."
             renderProgress = 0
 
-            let result = try await renderService.render(project: project, scenes: scenes, renderSettings: renderSettings) { progress, message in
+            let result = try await renderService.render(
+                project: project,
+                scenes: scenes,
+                renderSettings: renderSettings
+            ) { progress, message in
                 Task { @MainActor in
                     self.renderProgress = progress
                     self.statusMessage = message
@@ -224,5 +362,35 @@ final class AppViewModel {
             renderLog = error.localizedDescription
             statusMessage = "Render failed: \(error.localizedDescription)"
         }
+    }
+
+    private var resultWorkspaceURL: URL? {
+        activeProject.map { URL(fileURLWithPath: $0.workspacePath) }
+    }
+
+    private func refreshMotionRecipeState() {
+        guard !motionRecipeText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            motionRecipeValidationResult = nil
+            motionRecipePreview = nil
+            return
+        }
+
+        let result = motionRecipeService.validate(
+            recipeText: motionRecipeText,
+            currentScenes: scenes,
+            project: activeProject
+        )
+        motionRecipeValidationResult = result
+
+        guard let recipe = result.recipe, !result.hasErrors else {
+            motionRecipePreview = nil
+            return
+        }
+
+        motionRecipePreview = motionRecipeService.preview(
+            recipe: recipe,
+            currentScenes: scenes,
+            project: activeProject
+        )
     }
 }

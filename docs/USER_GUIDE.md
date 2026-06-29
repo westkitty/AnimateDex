@@ -19,6 +19,15 @@
 - The scene inspector shows file size, dimensions, sequence number, and motion preset.
 - Validation issues stay visible even when the import is usable.
 
+## Use a Motion Recipe
+
+1. Open a workspace with an imported scene plan.
+2. Paste JSON into the Motion Recipe panel or load one of the bundled examples.
+3. Click `Validate` to check schema, ranges, and target coverage.
+4. Click `Preview Changes` to see affected scenes and render-setting changes.
+5. Click `Apply Recipe` to write the updated scene plan and project files.
+6. Open `motion_recipe_report.txt` in the workspace if you need the apply summary.
+
 ## Render
 
 1. Set render width, height, FPS, and output filename.
@@ -31,6 +40,9 @@
 - `exports/proof_render.mp4`
 - `exports/render_manifest.json`
 - `logs/render_log.txt`
+- `motion_recipe_applied.json`
+- `motion_recipe_report.txt`
+- `scene_plan.before_motion_recipe.json`
 
 ## ZIP Import Notes
 

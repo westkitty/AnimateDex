@@ -10,6 +10,7 @@ struct AnimateProject: Codable, Sendable, Equatable {
     var workspacePath: String
     var scenePlanPath: String
     var renderSettings: RenderSettings
+    var lastMotionRecipeName: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case schemaVersion
@@ -21,6 +22,7 @@ struct AnimateProject: Codable, Sendable, Equatable {
         case workspacePath
         case scenePlanPath
         case renderSettings
+        case lastMotionRecipeName
     }
 }
 
