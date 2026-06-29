@@ -180,6 +180,23 @@ final class AppViewModel {
         NSWorkspace.shared.open(URL(fileURLWithPath: activeProject.workspacePath))
     }
 
+    func revealWorkspaceInFinder() {
+        guard let activeProject else { return }
+        let workspaceURL = URL(fileURLWithPath: activeProject.workspacePath)
+        NSWorkspace.shared.activateFileViewerSelecting([workspaceURL])
+    }
+
+    func revealExportsInFinder() {
+        guard let activeProject else { return }
+        let exportsURL = URL(fileURLWithPath: activeProject.workspacePath).appendingPathComponent("exports")
+        NSWorkspace.shared.activateFileViewerSelecting([exportsURL])
+    }
+
+    func revealLastRender() {
+        guard let outputPath = renderOutputPath else { return }
+        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: outputPath)])
+    }
+
     func copyDiagnostics() {
         copyToPasteboard(diagnosticsText)
         statusMessage = "Diagnostics copied"
@@ -191,6 +208,14 @@ final class AppViewModel {
         copyToPasteboard(statusCopyText)
         statusMessage = "Status copied"
         statusDetails = "Copied the current status and next-step text to the clipboard."
+        statusKind = .info
+    }
+
+    func copyLastError() {
+        guard let lastErrorNotice else { return }
+        copyToPasteboard(lastErrorNotice.copyText)
+        statusMessage = "Last error copied"
+        statusDetails = "Copied the most recent error to the clipboard."
         statusKind = .info
     }
 
@@ -319,6 +344,10 @@ final class AppViewModel {
             suggestion: "Apply the recipe if the preview looks correct."
         )
         selectedSection = .motionRecipe
+    }
+
+    func showSection(_ section: AppWorkflowSection) {
+        selectedSection = section
     }
 
     func applyMotionRecipe() {

@@ -6,13 +6,8 @@ struct WorkspaceDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if appModel.activeProject != nil {
-                    sectionHeader
-                    sectionContent
-                } else {
-                    WorkspaceEmptyStateView(appModel: appModel)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                }
+                sectionHeader
+                sectionContent
             }
             .padding(16)
         }
@@ -43,7 +38,11 @@ struct WorkspaceDetailView: View {
     private var sectionContent: some View {
         switch appModel.selectedSection {
         case .overview:
-            OverviewSectionView(appModel: appModel)
+            if appModel.hasActiveProject {
+                OverviewSectionView(appModel: appModel)
+            } else {
+                WorkspaceEmptyStateView(appModel: appModel)
+            }
         case .sequence:
             SequenceSectionView(appModel: appModel)
         case .motionRecipe:
@@ -96,7 +95,6 @@ struct WorkspaceEmptyStateView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .frame(maxWidth: 760, alignment: .leading)
         .padding(24)
     }
 }

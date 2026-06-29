@@ -14,7 +14,7 @@ struct AppSidebarView: View {
             }
             .padding(16)
         }
-        .frame(minWidth: 300, idealWidth: 320, maxWidth: 360)
+        .frame(minWidth: 280, idealWidth: 320)
         .background(Color(nsColor: .windowBackgroundColor))
     }
 
@@ -75,23 +75,44 @@ struct AppSidebarView: View {
 
     private var workflowNavigation: some View {
         GroupBox("Workflow") {
-            VStack(alignment: .leading, spacing: 8) {
-                ForEach(AppWorkflowSection.allCases) { section in
-                    Button {
-                        appModel.selectedSection = section
-                    } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: section.symbolName)
-                                .frame(width: 20, alignment: .leading)
-                            Text(section.title)
-                            Spacer()
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.vertical, 4)
+            workflowRows
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var workflowRows: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            ForEach(Array(AppWorkflowSection.allCases), id: \.self) { section in
+                workflowRow(for: section)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func workflowRow(for section: AppWorkflowSection) -> some View {
+        Button {
+            appModel.showSection(section)
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: section.symbolName)
+                    .frame(width: 20, alignment: .leading)
+                Text(section.title)
+                Spacer()
+                if appModel.selectedSection == section {
+                    Image(systemName: "checkmark")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(Color.accentColor)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 3)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 8)
+        .background {
+            if appModel.selectedSection == section {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(Color.accentColor.opacity(0.14))
+            }
         }
     }
 

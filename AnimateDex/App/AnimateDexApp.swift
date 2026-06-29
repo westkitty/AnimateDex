@@ -9,5 +9,8 @@ struct AnimateDexApp: App {
             MainWindow(appModel: appModel)
         }
         .windowStyle(.automatic)
+        .commands {
+            AnimateDexCommands(appModel: appModel)
+        }
     }
 }

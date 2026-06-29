@@ -34,6 +34,7 @@ private struct WindowConfigurator: NSViewRepresentable {
 private final class WindowAccessorView: NSView {
     var minSize: NSSize
     private var didConfigureWindow = false
+    private var didApplyInitialSize = false
 
     init(minSize: NSSize) {
         self.minSize = minSize
@@ -54,7 +55,11 @@ private final class WindowAccessorView: NSView {
     func configureWindowIfNeeded() {
         guard let window, !didConfigureWindow else { return }
         didConfigureWindow = true
-        window.styleMask.insert(.resizable)
+        window.styleMask.insert([.titled, .closable, .miniaturizable, .resizable])
         window.minSize = minSize
+        if !didApplyInitialSize {
+            didApplyInitialSize = true
+            window.setContentSize(NSSize(width: 1180, height: 760))
+        }
     }
 }
