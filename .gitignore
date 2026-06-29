@@ -3,6 +3,7 @@
 .env.*
 *.log
 .build/
+dist/
 DerivedData/
 *.xcuserstate
 *.xcworkspace/xcuserdata/

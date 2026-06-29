@@ -12,6 +12,13 @@
 8. Render a proof MP4.
 9. Copy diagnostics from the sidebar and confirm the text includes workspace, source, scene count, and paths.
 
+## Bundle Launch
+
+1. Run `./scripts/run_app_bundle.sh`.
+2. Open `dist/AnimateDex.app`.
+3. Confirm the app menu bar appears with File, Workflow, Render, and Diagnostics commands.
+4. Confirm the window has normal macOS chrome and can be resized from edges and corners.
+
 ## Sample Project
 
 Generate the sample images with:

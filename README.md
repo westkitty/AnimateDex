@@ -38,12 +38,19 @@ swift test
 swift run
 ```
 
+For the normal macOS app experience, build and launch the bundle:
+
+```bash
+./scripts/run_app_bundle.sh
+```
+
 ## macOS UI/UX Pass
 
 - Resize the window normally; the layout uses a resizable split view.
 - Use the sidebar to import, open, and switch workflow sections.
 - Copy status, diagnostics, and render output paths from the visible panels.
 - Motion Recipe lives in its own section and expects externally generated JSON.
+- Use the `.app` bundle in `dist/` for the real menu bar and window shell.
 
 ## Import
 
