@@ -1,0 +1,5 @@
+.build/arm64-apple-macosx/debug/AnimateDex-entitlement.plist
+.build/arm64-apple-macosx/debug/AnimateDex.dSYM/Contents/Info.plist
+.build/arm64-apple-macosx/debug/AnimateDexPackageTests.xctest/Contents/MacOS/AnimateDexPackageTests.dSYM/Contents/Info.plist
+examples/sample_project/README.md
+README.md

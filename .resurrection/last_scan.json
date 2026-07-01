@@ -1,0 +1,64 @@
+{
+  "git_state": {
+    "available": true,
+    "branch": "feature/macos-ui-ux-overhaul",
+    "dirty": true,
+    "head": "c6348264fc37425ea13eddbc293ba769cd639a99",
+    "head_subject": "Add native app bundle launch path",
+    "is_repo": true,
+    "remote_url": "git@github.com:westkitty/AnimateDex.git",
+    "repo_root": "/Users/andrew/AnimateDex",
+    "staged_count": 0,
+    "tracked_modified_count": 0,
+    "untracked_count": 1
+  },
+  "identity": {
+    "name": "AnimateDex",
+    "path": "/Users/andrew/AnimateDex"
+  },
+  "project_type": {
+    "confidence": 0.75,
+    "evidence": [
+      "Found Package.swift"
+    ],
+    "purpose": "Purpose could not be inferred confidently from filesystem signals.",
+    "type": "swift_package"
+  },
+  "recommended_next_actions": [
+    "Inspect the current uncommitted Git changes before making new edits.",
+    "Back up or review fragile configuration files before any risky changes.",
+    "Validate the project with the hinted test command: swift test",
+    "Validate the project with the hinted build command: swift build",
+    "Read `.resurrection/project_report.md` and make one bounded change at a time."
+  ],
+  "scan_timestamp": "2026-06-29T05:21:22+00:00",
+  "scanner_version": "1.1.0",
+  "signature": {
+    "git_dirty": {
+      "dirty": true,
+      "staged_count": 0,
+      "tracked_modified_count": 0,
+      "untracked_count": 1
+    },
+    "git_head": "c6348264fc37425ea13eddbc293ba769cd639a99",
+    "project_type": "swift_package",
+    "scanner_version": "1.1.0",
+    "watched_files": {
+      "Package.swift": {
+        "mtime_ns": 1782687767761028358,
+        "sha256": "5bcacdd4392660ab32022f9107b01ce7142b320281fc214b1290b1dd72a2ae7c",
+        "size": 496
+      },
+      "README.md": {
+        "mtime_ns": 1782699237090899661,
+        "sha256": "f48d5bdc74e63c87b7551ced9b41a6061a33b77df14d53759b4bc5db24776120",
+        "size": 2929
+      },
+      "examples/sample_project/README.md": {
+        "mtime_ns": 1782699283221447137,
+        "sha256": "cd1ee883a222166466194cb1dae30306aa085843d3cb4bba7a13805bf9f7df1b",
+        "size": 117
+      }
+    }
+  }
+}
